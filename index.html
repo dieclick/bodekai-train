@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bodekai Train</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Serif+JP:wght@900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #080807;
+      color: #e8e2d8;
+      font-family: 'Courier New', monospace;
+      overflow-x: hidden;
+    }
+
+    .splash {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .splash img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      filter: brightness(0.6);
+    }
+
+    .splash-noise {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    .splash-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 40%, #080807 100%);
+    }
+
+    .jp-sidebar {
+      position: absolute;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 13px;
+      letter-spacing: 6px;
+      color: rgba(255,255,255,0.18);
+      line-height: 1;
+      user-select: none;
+    }
+
+    .splash-title {
+      position: absolute;
+      bottom: 60px;
+      left: 50px;
+    }
+
+    .splash-title .game-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(52px, 9vw, 110px);
+      line-height: 0.9;
+      letter-spacing: 4px;
+      color: #fff;
+      mix-blend-mode: normal;
+    }
+
+    .splash-title .game-sub {
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-top: 14px;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:0.25} 50%{opacity:0.6} }
+
+    .strip {
+      width: 100%;
+      overflow: hidden;
+      border-top: 1px solid #1a1915;
+      border-bottom: 1px solid #1a1915;
+      padding: 14px 0;
+      background: #0b0a09;
+      white-space: nowrap;
+    }
+
+    .strip-inner {
+      display: inline-block;
+      animation: marquee 22s linear infinite;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: #c8430a;
+      text-transform: uppercase;
+    }
+
+    @keyframes marquee { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+    .gallery {
+      padding: 0;
+    }
+
+    .gallery-item {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid #1a1915;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      display: block;
+      filter: grayscale(20%);
+      transition: filter 0.4s;
+    }
+
+    .gallery-item:hover img {
+      filter: grayscale(0%);
+    }
+
+    .gallery-item .item-label {
+      position: absolute;
+      bottom: 16px;
+      left: 20px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .gallery-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid #1a1915;
+    }
+
+    .gallery-row .gallery-item {
+      border-bottom: none;
+      border-right: 1px solid #1a1915;
+    }
+
+    .gallery-row .gallery-item:last-child {
+      border-right: none;
+    }
+
+    .cta-block {
+      padding: 100px 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 40px;
+      border-top: 1px solid #1a1915;
+    }
+
+    .cta-left .title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 6vw, 80px);
+      line-height: 0.9;
+      letter-spacing: 2px;
+    }
+
+    .cta-left .title span {
+      color: #c8430a;
+    }
+
+    .cta-left .jp {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 13px;
+      color: #333;
+      margin-top: 16px;
+      letter-spacing: 4px;
+    }
+
+    .cta-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .cta-right .tbd {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #444;
+    }
+
+    .cta-right a {
+      display: block;
+      background: #c8430a;
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      transition: background 0.15s;
+    }
+
+    .cta-right a:hover { background: #a33508; }
+
+    footer {
+      padding: 24px 50px;
+      border-top: 1px solid #1a1915;
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: #2a2a26;
+      text-transform: uppercase;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .splash-title { left: 24px; bottom: 50px; }
+      .jp-sidebar { right: 12px; font-size: 11px; }
+      .gallery-row { grid-template-columns: 1fr; }
+      .gallery-row .gallery-item { border-right: none; border-bottom: 1px solid #1a1915; }
+      .cta-block { padding: 60px 24px; }
+      .cta-right { align-items: flex-start; }
+      footer { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="splash">
+    <img src="cover.png" alt="Bodekai Train">
+    <div class="splash-noise"></div>
+    <div class="splash-gradient"></div>
+    <div class="jp-sidebar">ボデカイ・トレイン　　カウボーイサムライ　　裏切り者を狩れ　　ハイパースタイル</div>
+    <div class="splash-title">
+      <div class="game-name">BODEKAI<br>TRAIN</div>
+      <div class="game-sub">Cowboy Samurai &nbsp;—&nbsp; Top-down Shooter</div>
+    </div>
+    <div class="scroll-hint">↓ scroll</div>
+  </div>
+
+
+  <div class="gallery">
+    <div class="gallery-item">
+      <img src="banner.png" alt="Gameplay">
+      <img src="conceptsb.png" alt="Character concept">
+	  <img src="conceptsE.png" alt="Character concept">
+      <span class="item-label">Gameplay</span>
+    </div>
+   </div>
+
+  <div class="cta-block">
+    <div class="cta-left">
+      <div class="title">Hunt down<br>the <span>traitor.</span></div>
+      <div class="jp">裏切り者を狩れ</div>
+    </div>
+    <div class="cta-right">
+      <span class="tbd">Release — TBD</span>
+      <a href="https://store.steampowered.com" target="_blank">Wishlist on Steam →</a>
+    </div>
+  </div>
+
+  <footer>
+    <span>© 2026 Bodekai Train</span>
+    <span>All rights reserved</span>
+  </footer>
+
+</body>
+</html>
