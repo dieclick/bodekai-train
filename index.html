@@ -167,7 +167,77 @@
     .gallery-row .gallery-item:last-child {
       border-right: none;
     }
+.social-links {
+  padding: 60px 50px 30px;
+  border-top: 1px solid #1a1915;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  flex-wrap: wrap;
+}
 
+.social-links .social-label {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #444;
+}
+
+.social-links .social-list {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.social-links a {
+  color: #c8430a;
+  text-decoration: none;
+  border: 1px solid #2a2925;
+  padding: 10px 16px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.social-links a:hover {
+  background: #c8430a;
+  border-color: #c8430a;
+  color: #fff;
+}
+
+/* Responsive gallery images */
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  max-width: 100%;
+}
+
+/* Prevent oversized images on very large screens */
+.gallery-item {
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .social-links {
+    padding: 40px 24px 24px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .social-links .social-list {
+    width: 100%;
+  }
+
+  .social-links a {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}
     .cta-block {
       padding: 100px 50px;
       display: flex;
@@ -274,7 +344,21 @@
 	  <img src="screenshot3.PNG" alt="Gameplay">
       </div>
    </div>
+<div class="social-links">
+  <div class="social-list">
+    <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
+      Twitter / X
+    </a>
 
+    <a href="https://www.instagram.com/dieclick/" target="_blank" rel="noopener noreferrer">
+      Instagram
+    </a>
+
+    <a href="http://www.youtube.com/@dieclick3659" target="_blank" rel="noopener noreferrer">
+      YouTube
+    </a>
+  </div>
+</div>
   <div class="cta-block">
     <div class="cta-left">
       <div class="title">Hunt down<br>the <span>traitor.</span></div>
@@ -286,7 +370,7 @@
   </div>
 
   <footer>
-    <span>© 2026 Bodekai Train</span>
+    <span>©2027 Bodekai Train</span>
     <span>All rights reserved</span>
   </footer>
 
